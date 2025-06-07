@@ -21,7 +21,11 @@ public class Player : MonoBehaviour
 
     int score = 0;
 
-    
+    public GameObject bulletPrefab;
+    public Transform firePoint; // 총알 나오는 위치
+    private Vector2 lastDirection = Vector2.down; // 마지막 바라본 방향
+
+
 
 
 
@@ -29,7 +33,8 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         sR = GetComponent<SpriteRenderer>();
-        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.gravityScale = 0f;
     }
 
     private void Update()
@@ -59,6 +64,25 @@ public class Player : MonoBehaviour
 
 
         }
+
+        if (input.sqrMagnitude > 0.01f)
+        {
+            lastDirection = input.normalized;
+
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            FireBullet();
+        }
+
+        void FireBullet()
+        {
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+            bullet.GetComponent<PlayerAttack>().direction = lastDirection;
+        }
+
     }
     private void FixedUpdate()
     {

@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class RoomController : MonoBehaviour
 {
+    public int roomLevel = 1; // 1층, 2층, 3층...
 
     public List<PlantEnemy> plantEnemies = new List<PlantEnemy>();
     public bool isCleared = false;
 
     public void OnPlayerEnter(GameObject player)
     {
-        Debug.Log("Player entered room.");
-        // 디버프 적용 같은 것도 여기서 가능
+        foreach (var enemy in plantEnemies)
+        {
+            enemy.ApplyLevelScaling(roomLevel);
+        }
     }
 
     public void OnPlantDied(PlantEnemy plant)
@@ -20,19 +23,7 @@ public class RoomController : MonoBehaviour
         if (plantEnemies.Count == 0)
         {
             isCleared = true;
-            Debug.Log("Room Cleared!");
+            Debug.Log("방 클리어!");
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

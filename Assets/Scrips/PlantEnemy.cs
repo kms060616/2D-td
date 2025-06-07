@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlantEnemy : MonoBehaviour
 {
+    public int baseHP = 2;
+    private int currentHP;
+
     private RoomController room;
 
     void Start()
@@ -13,15 +16,27 @@ public class PlantEnemy : MonoBehaviour
         {
             room.plantEnemies.Add(this);
         }
+
+        // fallback: 최소 체력 보장
+        currentHP = baseHP;
     }
 
-    void OnMouseDown()
+    public void ApplyLevelScaling(int level)
     {
-        Debug.Log("PlantEnemy died!");
-        TakeDamage(1);
+        currentHP = baseHP + level - 1;
+        Debug.Log($"{gameObject.name} 체력: {currentHP}");
     }
 
     public void TakeDamage(int damage)
+    {
+        currentHP -= damage;
+        if (currentHP <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
     {
         room.OnPlantDied(this);
         Destroy(gameObject);
