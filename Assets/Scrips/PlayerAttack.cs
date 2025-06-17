@@ -6,7 +6,7 @@ public class PlayerAttack : MonoBehaviour
 {
     public float speed = 8f;
     public Vector2 direction;
-    public float lifeTime = 3f;
+    public float lifeTime = 0.5f;
 
     void Start()
     {

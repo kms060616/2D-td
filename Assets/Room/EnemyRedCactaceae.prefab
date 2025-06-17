@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2737671634930791758}
   - component: {fileID: 8258665797067994665}
   m_Layer: 0
-  m_Name: 'EnemyProjectile  '
+  m_Name: EnemyRedCactaceae
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -161,6 +161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440343f184099974e8489967499f4e6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 6
   lifeTime: 3
   damage: 1
