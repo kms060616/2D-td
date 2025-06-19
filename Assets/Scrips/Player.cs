@@ -7,33 +7,96 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    float moveSpeed = 2f;
+    [Header("Movement")]
+    [SerializeField] private float moveSpeed = 2f;
 
-    [SerializeField] Sprite spriteUp;
-    [SerializeField] Sprite spriteDown;
-    [SerializeField] Sprite spriteLeft;
-    [SerializeField] Sprite spriteRight;
+    [Header("Sprites")]
+    [SerializeField] private Sprite spriteUp;
+    [SerializeField] private Sprite spriteDown;
+    [SerializeField] private Sprite spriteLeft;
+    [SerializeField] private Sprite spriteRight;
 
-    Animator animator;
-
-    Rigidbody2D rb;
-    SpriteRenderer sR;
-
-    Vector2 input;
-    Vector2 velocity;
-
-    public int CurrentHP => currentHP;
-
-    public GameObject bulletPrefab;
-    public Transform firePoint; // 총알 나오는 위치
-    private Vector2 lastDirection = Vector2.down; // 마지막 바라본 방향
-
+    [Header("HP")]
     public int maxHP = 5;
     private int currentHP;
+    public int CurrentHP => currentHP;
+
+    [Header("Shooting")]
+    public GameObject bulletPrefab;
+    public Transform firePoint;
+    private Vector2 lastDirection = Vector2.down; // 기본 방향
+
+    // Components
+    private Rigidbody2D rb;
+    private SpriteRenderer sR;
+    private Animator animator;
+
+    private Vector2 input;
+    private Vector2 velocity;
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        sR = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.gravityScale = 0f;
+    }
 
     void Start()
     {
         currentHP = maxHP;
+    }
+
+    void Update()
+    {
+        HandleInput();
+        HandleAnimation();
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            FireBullet();
+        }
+    }
+
+    void FixedUpdate()
+    {
+        rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
+    }
+
+    private void HandleInput()
+    {
+        input.x = Input.GetAxisRaw("Horizontal");
+        input.y = Input.GetAxisRaw("Vertical");
+        velocity = input.normalized * moveSpeed;
+
+        if (input.sqrMagnitude > 0.01f)
+        {
+            lastDirection = input.normalized;
+        }
+    }
+
+    private void HandleAnimation()
+    {
+        if (input.sqrMagnitude > 0.01f)
+        {
+            animator.SetFloat("MoveX", input.x);
+            animator.SetFloat("MoveY", input.y);
+            animator.SetBool("IsMoving", true);
+        }
+        else
+        {
+            animator.SetBool("IsMoving", false);
+        }
+    }
+
+    private void FireBullet()
+    {
+        if (lastDirection == Vector2.zero) lastDirection = Vector2.down;
+
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+        bullet.GetComponent<PlayerAttack>().Init(lastDirection);
     }
 
     public void TakeDamage(int damage)
@@ -47,69 +110,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Die()
+    private void Die()
     {
         Debug.Log("플레이어 사망!");
-        SeedInventory.Instance.SaveInventory(); // 저장하고
-        SceneManager.LoadScene("SampleScene");  // 시작 씬으로 복귀
-        // 게임 오버 처리 or 재시작
-        // SceneManager.LoadScene("GameOverScene");
+        SeedInventory.Instance.SaveInventory();
+        SceneManager.LoadScene("SampleScene");
     }
 
 
-
-
-
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        sR = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        rb.gravityScale = 0f;
-    }
-
-    private void Update()
-    {
-        input.x = Input.GetAxisRaw("Horizontal");
-        input.y = Input.GetAxisRaw("Vertical");
-        velocity = input.normalized * moveSpeed;
-
-
-
-        if (input.sqrMagnitude > 0.01f)
-        {
-
-
-            animator.SetFloat("MoveX", input.x);
-            animator.SetFloat("MoveY", input.y);
-            animator.SetBool("IsMoving", true);
-            lastDirection = input.normalized;
-
-
-        }
-        else
-        {
-            animator.SetBool("IsMoving", false);
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            FireBullet();
-        }
-
-        void FireBullet()
-        {
-            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
-            bullet.GetComponent<PlayerAttack>().direction = lastDirection;
-        }
-
-    }
-    private void FixedUpdate()
-    {
-        rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
-    }
-
-    
 }
