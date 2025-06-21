@@ -4,16 +4,41 @@ using UnityEngine;
 
 public class RoomController : MonoBehaviour
 {
-    public int roomLevel = 1; // 1Ãþ, 2Ãþ, 3Ãþ...
+    public int roomLevel = 1;
+    
+    public GameObject[] possibleEnemies; // ´Ù¾çÇÑ ¸ó½ºÅÍ ÇÁ¸®ÆÕ ¹è¿­
 
     public List<PlantEnemy> plantEnemies = new List<PlantEnemy>();
     public bool isCleared = false;
+    public Transform[] spawnPoints;
+    private bool hasSpawned = false;
 
     public void OnPlayerEnter(GameObject player)
     {
+        if (!hasSpawned)
+        {
+            SpawnRandomEnemies();
+            hasSpawned = true; 
+        }
+
         foreach (var enemy in plantEnemies)
         {
             enemy.ApplyLevelScaling(roomLevel);
+        }
+    }
+
+    public void SpawnRandomEnemies()
+    {
+        foreach (Transform point in spawnPoints)
+        {
+            GameObject prefab = possibleEnemies[Random.Range(0, possibleEnemies.Length)];
+            GameObject enemy = Instantiate(prefab, point.position, Quaternion.identity, transform);
+
+            PlantEnemy plant = enemy.GetComponent<PlantEnemy>();
+            if (plant != null)
+            {
+                plantEnemies.Add(plant);
+            }
         }
     }
 
@@ -26,4 +51,6 @@ public class RoomController : MonoBehaviour
             Debug.Log("¹æ Å¬¸®¾î!");
         }
     }
+
+    
 }
