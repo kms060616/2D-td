@@ -13,4 +13,5 @@ public class DoorTrigger : MonoBehaviour
             other.transform.position = targetPosition.position;
         }
     }
+
 }
