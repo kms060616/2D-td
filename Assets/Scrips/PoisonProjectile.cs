@@ -30,8 +30,9 @@ public class PoisonProjectile : MonoBehaviour, IEnemyProjectile
             Player player = other.GetComponent<Player>();
             if (player != null)
             {
-                player.StartCoroutine(ApplyPoison(player));
+                player.ApplyPoison(poisonDuration, poisonTickInterval, poisonDamage);
             }
+
             Destroy(gameObject);
         }
     }

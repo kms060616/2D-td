@@ -33,6 +33,9 @@ public class Player : MonoBehaviour
 
     private Vector2 input;
     private Vector2 velocity;
+    public GameObject poisonIcon; // Inspector에 PoisonIcon Image 드래그
+
+    private Coroutine poisonCoroutine;
 
     void Awake()
     {
@@ -115,6 +118,30 @@ public class Player : MonoBehaviour
         Debug.Log("플레이어 사망!");
         SeedInventory.Instance.SaveInventory();
         SceneManager.LoadScene("SampleScene");
+    }
+
+    public void ApplyPoison(float duration, float tickInterval, int damage)
+    {
+        if (poisonCoroutine != null)
+            StopCoroutine(poisonCoroutine);
+
+        poisonCoroutine = StartCoroutine(ApplyPoisonCoroutine(duration, tickInterval, damage));
+    }
+
+    IEnumerator ApplyPoisonCoroutine(float duration, float tickInterval, int damage)
+    {
+        poisonIcon.SetActive(true);
+
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            TakeDamage(damage);
+            yield return new WaitForSeconds(tickInterval);
+            elapsed += tickInterval;
+        }
+
+        poisonIcon.SetActive(false);
+        poisonCoroutine = null;
     }
 
 
