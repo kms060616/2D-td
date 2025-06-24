@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoisonProjectile : MonoBehaviour, IEnemyProjectile
+public class NormalProjectile : MonoBehaviour, IEnemyProjectile
 {
     public float speed = 4f;
     public float lifeTime = 4f;
-    public int poisonDamage = 1;
-    public float poisonDuration = 2f;
-    public float poisonTickInterval = 0.5f;
+    public int damage = 1;
 
     private Vector2 direction;
 
@@ -34,21 +32,10 @@ public class PoisonProjectile : MonoBehaviour, IEnemyProjectile
             Player player = other.GetComponent<Player>();
             if (player != null)
             {
-                player.ApplyPoison(poisonDuration, poisonTickInterval, poisonDamage);
+                player.TakeDamage(damage);
             }
 
             Destroy(gameObject);
-        }
-    }
-
-    IEnumerator ApplyPoison(Player player)
-    {
-        float elapsed = 0f;
-        while (elapsed < poisonDuration)
-        {
-            player.TakeDamage(poisonDamage);
-            yield return new WaitForSeconds(poisonTickInterval);
-            elapsed += poisonTickInterval;
         }
     }
 }

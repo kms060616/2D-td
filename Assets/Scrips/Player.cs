@@ -4,6 +4,7 @@ using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -21,10 +22,22 @@ public class Player : MonoBehaviour
     private int currentHP;
     public int CurrentHP => currentHP;
 
+    [Header("UI")]
+    public TextMeshProUGUI ammoText;
+    public Slider reloadSlider;
+
     [Header("Shooting")]
     public GameObject bulletPrefab;
     public Transform firePoint;
-    private Vector2 lastDirection = Vector2.down; // 기본 방향
+    private Vector2 lastDirection = Vector2.down;
+
+    public float fireCooldown = 0.2f;
+    private float fireTimer = 0f;
+
+    public int maxAmmo = 6;
+    private int currentAmmo;
+    public float reloadTime = 1.5f;
+    private bool isReloading = false;
 
     // Components
     private Rigidbody2D rb;
@@ -50,6 +63,15 @@ public class Player : MonoBehaviour
     void Start()
     {
         currentHP = maxHP;
+        currentAmmo = maxAmmo;
+
+        UpdateAmmoUI();
+        reloadSlider.gameObject.SetActive(false);
+    }
+
+    private void UpdateAmmoUI()
+    {
+        ammoText.text = $"{currentAmmo} / {maxAmmo}";
     }
 
     void Update()
@@ -57,7 +79,23 @@ public class Player : MonoBehaviour
         HandleInput();
         HandleAnimation();
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        fireTimer += Time.deltaTime;
+
+        if (isReloading) return;
+
+        if (Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo)
+        {
+            StartCoroutine(Reload());
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo && !isReloading)
+        {
+            StartCoroutine(Reload());
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Z) && fireTimer >= fireCooldown && currentAmmo > 0)
         {
             FireBullet();
         }
@@ -96,10 +134,16 @@ public class Player : MonoBehaviour
 
     private void FireBullet()
     {
+        fireTimer = 0f;
+        currentAmmo--;
+
         if (lastDirection == Vector2.zero) lastDirection = Vector2.down;
 
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
         bullet.GetComponent<PlayerAttack>().Init(lastDirection);
+
+        UpdateAmmoUI();
+
     }
 
     public void TakeDamage(int damage)
@@ -142,6 +186,27 @@ public class Player : MonoBehaviour
 
         poisonIcon.SetActive(false);
         poisonCoroutine = null;
+    }
+    IEnumerator Reload()
+    {
+        isReloading = true;
+        reloadSlider.gameObject.SetActive(true);
+        reloadSlider.value = 0f;
+
+        float elapsed = 0f;
+
+        while (elapsed < reloadTime)
+        {
+            elapsed += Time.deltaTime;
+            reloadSlider.value = elapsed / reloadTime;
+            yield return null;
+        }
+
+        currentAmmo = maxAmmo;
+        UpdateAmmoUI();
+
+        isReloading = false;
+        reloadSlider.gameObject.SetActive(false);
     }
 
 

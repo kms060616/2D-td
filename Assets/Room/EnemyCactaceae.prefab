@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6606209433391391315}
   - component: {fileID: 6534412121149828526}
   - component: {fileID: 2737671634930791758}
-  - component: {fileID: 8258665797067994665}
+  - component: {fileID: -3012729313051134140}
   m_Layer: 0
   m_Name: EnemyCactaceae
   m_TagString: Untagged
@@ -149,7 +149,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.1
---- !u!114 &8258665797067994665
+--- !u!114 &-3012729313051134140
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,9 +158,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7232709921508727414}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 440343f184099974e8489967499f4e6d, type: 3}
+  m_Script: {fileID: 11500000, guid: 47f7577456f5d014b9c44bbccbfaf6f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
-  lifeTime: 3
-  damage: 1
+  speed: 6
+  lifeTime: 4
+  damage: 2
