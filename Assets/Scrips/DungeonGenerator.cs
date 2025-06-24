@@ -28,7 +28,7 @@ public class DungeonGenerator : MonoBehaviour
             if (controller != null)
             {
                 controller.roomLevel = i + 1;
-                controller.SpawnRandomEnemies();
+                controller.SpawnRandomEnemies(i + 1); // 층수에 따라 적 생성
             }
 
             Vector3 doorOffsetUp = Vector3.up * (roomHeight / 2f - 0f);
@@ -37,34 +37,40 @@ public class DungeonGenerator : MonoBehaviour
             GameObject doorUp = null;
             GameObject doorDown = null;
 
-            // 첫 방이 아니면 아래 문 생성
+            // 아래 문 생성 (첫 방 제외)
             if (i != 0)
             {
                 doorDown = Instantiate(doorPrefab, roomPos + doorOffsetDown, Quaternion.identity, currentRoom.transform);
+                doorDown.name = "DoorDown";
             }
 
-            // 마지막 방이 아니면 위 문 생성
+            // 위 문 생성 (마지막 방 제외)
             if (i != numberOfRooms - 1)
             {
                 doorUp = Instantiate(doorPrefab, roomPos + doorOffsetUp, Quaternion.identity, currentRoom.transform);
+                doorUp.name = "DoorUp";
             }
 
-            // 연결 (현재 방의 아래문 ↔ 이전 방의 위문)
+            // 연결 (현재 방 아래문 ↔ 이전 방 위문)
             if (i > 0 && doorDown != null)
             {
                 GameObject prevRoom = rooms[i - 1];
+                Transform prevDoorUp = prevRoom.transform.Find("DoorUp");
 
-                // 이전 방의 위문 찾기
-                Transform prevDoorUp = prevRoom.transform.Find("DoorUp(Clone)");
                 if (prevDoorUp != null)
                 {
+                    Debug.Log($"[문 연결] {doorDown.name} ↔ {prevDoorUp.name}");
                     ConnectDoors(doorDown, prevDoorUp.gameObject);
+                }
+                else
+                {
+                    Debug.LogWarning($"이전 방에서 DoorUp을 찾을 수 없음! 방 index: {i - 1}");
                 }
             }
         }
     }
 
-        void ConnectDoors(GameObject doorA, GameObject doorB)
+    void ConnectDoors(GameObject doorA, GameObject doorB)
     {
         DoorTrigger triggerA = doorA.GetComponent<DoorTrigger>();
         DoorTrigger triggerB = doorB.GetComponent<DoorTrigger>();

@@ -51,6 +51,30 @@ public class RoomController : MonoBehaviour
             Debug.Log("방 클리어!");
         }
     }
+    public void SpawnRandomEnemies(int level)
+    {
+        hasSpawned = true;
+        int monsterCount = Mathf.Min(level + 1, spawnPoints.Length); // 예: 1층=2마리, 3층=4마리...
 
-    
+        List<Transform> spawnPool = new List<Transform>(spawnPoints);
+        for (int i = 0; i < monsterCount; i++)
+        {
+            // 랜덤 위치 선택 & 제거
+            int randIndex = Random.Range(0, spawnPool.Count);
+            Transform point = spawnPool[randIndex];
+            spawnPool.RemoveAt(randIndex);
+
+            GameObject prefab = possibleEnemies[Random.Range(0, possibleEnemies.Length)];
+            GameObject enemy = Instantiate(prefab, point.position, Quaternion.identity, transform);
+
+            PlantEnemy plant = enemy.GetComponent<PlantEnemy>();
+            if (plant != null)
+            {
+                plant.ApplyLevelScaling(level);     // 체력 스케일링!
+                plantEnemies.Add(plant);
+            }
+        }
+    }
+
+
 }
