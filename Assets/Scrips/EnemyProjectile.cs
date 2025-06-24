@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyProjectile : MonoBehaviour
+public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
 {
     public float speed = 4f;
     public float lifeTime = 4f;
@@ -24,15 +24,13 @@ public class EnemyProjectile : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Player player = other.GetComponent<Player>();
-            if (player != null)
+            Player p = other.GetComponent<Player>();
+            if (p != null)
             {
-                player.TakeDamage(damage);
+                p.TakeDamage(damage);
             }
-
             Destroy(gameObject);
         }
     }
-
 
 }

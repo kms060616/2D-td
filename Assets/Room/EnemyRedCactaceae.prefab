@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6606209433391391315}
   - component: {fileID: 6534412121149828526}
   - component: {fileID: 2737671634930791758}
-  - component: {fileID: 8258665797067994665}
+  - component: {fileID: -6055093516490524196}
   m_Layer: 0
   m_Name: EnemyRedCactaceae
   m_TagString: Untagged
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 7f56f996f7e64f74bbdbc5f74c97fd78, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -146,10 +146,10 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.0017246008, y: 0.015521541}
   serializedVersion: 2
-  m_Radius: 0.1
---- !u!114 &8258665797067994665
+  m_Radius: 0.07240622
+--- !u!114 &-6055093516490524196
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,9 +158,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7232709921508727414}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 440343f184099974e8489967499f4e6d, type: 3}
+  m_Script: {fileID: 11500000, guid: cdbd391724768f64e987d849701eccd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 6
-  lifeTime: 3
-  damage: 1
+  speed: 4
+  lifeTime: 4
+  poisonDamage: 1
+  poisonDuration: 2
+  poisonTickInterval: 0.5

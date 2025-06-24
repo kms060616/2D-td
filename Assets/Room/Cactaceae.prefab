@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseHP: 3
-  projectilePrefab: {fileID: 7232709921508727414, guid: e2e0a8b94df72664498522b3e1e51bff,
+  projectilePrefab: {fileID: 7232709921508727414, guid: 0bdfc2c0ab7ba5641b6d327886fe0428,
     type: 3}
   attackCooldown: 1
   attackRange: 8

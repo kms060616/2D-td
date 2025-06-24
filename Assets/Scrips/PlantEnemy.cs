@@ -83,8 +83,23 @@ public class PlantEnemy : MonoBehaviour
 
     void ShootAtPlayer()
     {
+        if (projectilePrefab == null)
+        {
+            Debug.LogError($"{gameObject.name}의 projectilePrefab이 비어 있습니다!");
+            return;
+        }
+
         Vector2 dir = (player.position - transform.position).normalized;
         GameObject proj = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-        proj.GetComponent<EnemyProjectile>().Initialize(dir);
+
+        var projectile = proj.GetComponent<IEnemyProjectile>();
+        if (projectile != null)
+        {
+            projectile.Initialize(dir);
+        }
+        else
+        {
+            Debug.LogError($"{proj.name}에 IEnemyProjectile 인터페이스가 구현된 스크립트가 없습니다!");
+        }
     }
 }
