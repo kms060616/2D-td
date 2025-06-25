@@ -4031,6 +4031,8 @@ MonoBehaviour:
   - {fileID: 5524832923227173160, guid: 40232c100b18a5d41bf9c25295ed6fc3, type: 3}
   - {fileID: 6566909690741994468, guid: 1dfd11b216bf0aa48988da11bcf8ce41, type: 3}
   - {fileID: 1351804876202412088, guid: 923c4a3dfc8ccd04180b777f08e8550e, type: 3}
+  - {fileID: 5524832923227173160, guid: dbabf9700ac300e4b8aa2d83f108d011, type: 3}
+  - {fileID: 6566909690741994468, guid: fa762b98038d1a0439e1a80241c6958d, type: 3}
   plantEnemies: []
   isCleared: 0
   spawnPoints:

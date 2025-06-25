@@ -58,6 +58,7 @@ public class Player : MonoBehaviour
     private Coroutine poisonCoroutine;
 
     private bool isShopOpen = false;
+    private bool bonusApplied = false;
 
     void Awake()
     {
@@ -76,6 +77,8 @@ public class Player : MonoBehaviour
 
         UpdateAmmoUI();
         reloadSlider.gameObject.SetActive(false);
+        Debug.Log("[디버그] 보유 아이템 목록: " + string.Join(", ", SeedInventory.Instance.data.acquiredItems));
+        TryApplyItemBonus();
     }
 
     private void UpdateAmmoUI()
@@ -218,15 +221,42 @@ public class Player : MonoBehaviour
     public void OpenShop()
     {
         shopPanel.SetActive(true);
-        isShopOpen = true;  // 이동 막기
+        isShopOpen = true; 
         isShopOpen = true;
     }
 
     public void CloseShop()
     {
         shopPanel.SetActive(false);
-        isShopOpen = false; // 이동 가능하게
+        isShopOpen = false; 
         isShopOpen = false;
+    }
+
+    private void TryApplyItemBonus()
+    {
+        if (SeedInventory.Instance == null)
+        {
+            Debug.LogWarning("[보너스 실패] 인벤토리 인스턴스 없음");
+            return;
+        }
+
+        if (!SeedInventory.Instance.HasItem("가시"))
+        {
+            Debug.Log("[보너스 실패] '가시' 아이템 없음");
+            return;
+        }
+
+        if (bonusApplied)
+        {
+            Debug.Log("[보너스 실패] 이미 보너스 적용됨");
+            return;
+        }
+
+        maxHP += 5;
+        currentHP += 5;
+        moveSpeed += 1f;
+        bonusApplied = true;
+        Debug.Log("[보너스 적용됨] 체력 +5, 이동속도 +1");
     }
 
 

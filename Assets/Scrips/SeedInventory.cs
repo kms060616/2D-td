@@ -7,7 +7,7 @@ public class SeedInventory : MonoBehaviour
 {
     public static SeedInventory Instance;
 
-    public SeedInventoryData data = new SeedInventoryData(); // 외부 클래스 사용
+    public SeedInventoryData data = new SeedInventoryData(); 
 
     private string savePath => Path.Combine(Application.persistentDataPath, "seed_inventory.json");
 
@@ -107,7 +107,7 @@ public class SeedInventory : MonoBehaviour
         if (SeedInventory.Instance.starDust >= price)
         {
             SeedInventory.Instance.starDust -= price;
-            SeedInventory.Instance.AcquireItem(itemName);  // ← 이게 꼭 있어야 함!
+            SeedInventory.Instance.AcquireItem(itemName); 
             Debug.Log($"[구매] {itemName} 구매 성공!");
         }
         else
