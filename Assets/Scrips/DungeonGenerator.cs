@@ -6,7 +6,7 @@ public class DungeonGenerator : MonoBehaviour
 {
     public GameObject roomPrefab;
     public GameObject doorPrefab;
-    public int numberOfRooms = 5;
+    public int numberOfRooms = 7;
     public float roomHeight = 20f;
 
     private List<GameObject> rooms = new List<GameObject>();

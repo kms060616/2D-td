@@ -60,6 +60,8 @@ public class Player : MonoBehaviour
     private bool isShopOpen = false;
     private bool bonusApplied = false;
 
+    public GameObject escapePanel;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -88,6 +90,12 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // ESC 창이 이미 떠있으면 닫기, 아니면 열기
+            escapePanel.SetActive(!escapePanel.activeSelf);
+        }
+
         HandleInput(); // 항상 실행돼야 함 (방향 기억 포함)
 
         if (isShopOpen) return; // 아래 로직만 차단
@@ -95,6 +103,7 @@ public class Player : MonoBehaviour
         HandleAnimation();
 
         fireTimer += Time.deltaTime;
+
 
         if (isReloading) return;
 
