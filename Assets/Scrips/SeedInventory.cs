@@ -7,7 +7,7 @@ public class SeedInventory : MonoBehaviour
 {
     public static SeedInventory Instance;
 
-    public SeedInventoryData data = new SeedInventoryData();
+    public SeedInventoryData data = new SeedInventoryData(); // 외부 클래스 사용
 
     private string savePath => Path.Combine(Application.persistentDataPath, "seed_inventory.json");
 
@@ -25,12 +25,51 @@ public class SeedInventory : MonoBehaviour
         }
     }
 
-    public void CollectSeed(string seedType)
+    public void SellSeed(string seedType, int sellPrice)
     {
-        if (!data.collectedSeeds.Contains(seedType))
+        if (data.collectedSeeds.Contains(seedType))
         {
-            data.collectedSeeds.Add(seedType);
-            Debug.Log($"[인벤토리] 씨앗 추가: {seedType}");
+            data.collectedSeeds.Remove(seedType);
+            data.starDust += sellPrice;
+
+            SaveInventory();
+            Debug.Log($"[판매] {seedType} → {sellPrice} 별가루 획득");
+        }
+        else
+        {
+            Debug.Log($"[판매 실패] {seedType} 없음");
+        }
+    }
+
+    public void AcquireItem(string itemName)
+    {
+        if (string.IsNullOrEmpty(itemName))
+        {
+            Debug.LogWarning("[오류] AcquireItem에 전달된 itemName이 null 또는 빈 문자열입니다.");
+            return;
+        }
+
+        Debug.Log($"[디버그] AcquireItem 호출됨: {itemName}");
+
+        if (!data.acquiredItems.Contains(itemName))
+        {
+            data.acquiredItems.Add(itemName);
+            SaveInventory();
+            Debug.Log($"[인벤토리] 아이템 추가됨: {itemName}");
+        }
+    }
+
+    public bool HasItem(string itemName)
+    {
+        return data.acquiredItems.Contains(itemName);
+    }
+
+    public int starDust
+    {
+        get => data.starDust;
+        set
+        {
+            data.starDust = value;
             SaveInventory();
         }
     }
@@ -39,20 +78,42 @@ public class SeedInventory : MonoBehaviour
     {
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
-        Debug.Log($"[저장] 인벤토리 저장됨: {savePath}");
     }
 
     public void LoadInventory()
     {
-        string path = Application.persistentDataPath + "/seed_inventory.json";
-        if (File.Exists(path))
+        if (File.Exists(savePath))
         {
-            string json = File.ReadAllText(path);
+            string json = File.ReadAllText(savePath);
             data = JsonUtility.FromJson<SeedInventoryData>(json);
         }
         else
         {
-            data = new SeedInventoryData(); //이게 없으면 문제 생김
+            data = new SeedInventoryData();
         }
     }
+
+    public void CollectSeed(string seedType)
+    {
+        if (!data.collectedSeeds.Contains(seedType))
+        {
+            data.collectedSeeds.Add(seedType);
+            SaveInventory();
+            Debug.Log($"[인벤토리] 씨앗 추가: {seedType}");
+        }
+    }
+    public void BuyItem(string itemName, int price)
+    {
+        if (SeedInventory.Instance.starDust >= price)
+        {
+            SeedInventory.Instance.starDust -= price;
+            SeedInventory.Instance.AcquireItem(itemName);  // ← 이게 꼭 있어야 함!
+            Debug.Log($"[구매] {itemName} 구매 성공!");
+        }
+        else
+        {
+            Debug.Log("[구매 실패] 별가루 부족");
+        }
+    }
+
 }

@@ -7,4 +7,6 @@ using UnityEngine;
 public class SeedInventoryData
 {
     public List<string> collectedSeeds = new List<string>();
+    public int starDust = 0;
+    public List<string> acquiredItems = new List<string>();
 }

@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class SeedInventoryUI : MonoBehaviour
 {
+    [Header("아이템 전용 스프라이트")]
+    public Sprite thornItemSprite;
+
     public GameObject inventoryPanel;       // 열고 닫을 패널
     public Transform contentParent;         // SeedSlot을 넣을 부모
     public GameObject seedSlotPrefab;       // 씨앗 하나 보여주는 프리팹
@@ -36,19 +39,18 @@ public class SeedInventoryUI : MonoBehaviour
 
     void RefreshInventoryUI()
     {
+        // 기존 슬롯들 제거
         foreach (Transform child in contentParent)
         {
             Destroy(child.gameObject);
         }
 
+        // 씨앗 슬롯 생성
         foreach (string seed in SeedInventory.Instance.data.collectedSeeds)
         {
             GameObject slot = Instantiate(seedSlotPrefab, contentParent);
-
-            // 이미지 설정만 남기고 텍스트 제거
             Image iconImage = slot.transform.Find("IconImage").GetComponent<Image>();
 
-            // seedType에 따라 스프라이트 바꾸기
             switch (seed)
             {
                 case "선인장":
@@ -64,7 +66,28 @@ public class SeedInventoryUI : MonoBehaviour
                     iconImage.sprite = defaultSeedSprite;
                     break;
             }
+        }
 
+        // 아이템 슬롯 생성
+        foreach (string item in SeedInventory.Instance.data.acquiredItems)
+        {
+            GameObject slot = Instantiate(seedSlotPrefab, contentParent);
+            Image iconImage = slot.transform.Find("IconImage").GetComponent<Image>();
+            TextMeshProUGUI nameText = slot.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
+
+            // 아이템 이름 텍스트 표시
+            nameText.text = item;
+
+            // 예시: 아이템 이름에 따라 이미지 다르게 하기
+            switch (item)
+            {
+                case "가시":
+                    iconImage.sprite = thornItemSprite;
+                    break;
+                default:
+                    iconImage.sprite = defaultSeedSprite;
+                    break;
+            }
         }
     }
 }

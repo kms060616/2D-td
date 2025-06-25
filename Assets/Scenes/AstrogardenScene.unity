@@ -1062,8 +1062,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.479, y: 0.001}
-  m_SizeDelta: {x: 1.3225, y: 0.5162}
+  m_AnchoredPosition: {x: 1.9824, y: 0.52}
+  m_SizeDelta: {x: 2.3295, y: 0.4955}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &414374462
 MonoBehaviour:
@@ -1087,8 +1087,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5814b04d02c30a44e85e6405dba51b50, type: 2}
+  m_sharedMaterial: {fileID: -3948759988491027071, guid: 5814b04d02c30a44e85e6405dba51b50,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1112,8 +1113,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.5
-  m_fontSizeBase: 0.5
+  m_fontSize: 0.4
+  m_fontSizeBase: 0.4
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1490,7 +1491,6 @@ GameObject:
   - component: {fileID: 618831477}
   - component: {fileID: 618831478}
   - component: {fileID: 618831479}
-  - component: {fileID: 618831480}
   m_Layer: 0
   m_Name: player
   m_TagString: Player
@@ -1701,24 +1701,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &618831480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 618831472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d069a6cd9deeafb4c90594acd0cd5804, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 5471016677890660946, guid: dee0bbb8d1a3ae74fae11370bd35a3f1,
-    type: 3}
-  firePoint: {fileID: 75783548}
-  fireCooldown: 0.2
-  maxAmmo: 6
-  reloadTime: 1.5
 --- !u!4 &663601352 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3788268346123372680, guid: 1dfd11b216bf0aa48988da11bcf8ce41,

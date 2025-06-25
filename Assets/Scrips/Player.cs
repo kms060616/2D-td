@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
 public class Player : MonoBehaviour
 {
     [Header("Movement")]
@@ -16,6 +17,12 @@ public class Player : MonoBehaviour
     [SerializeField] private Sprite spriteDown;
     [SerializeField] private Sprite spriteLeft;
     [SerializeField] private Sprite spriteRight;
+
+    [SerializeField] private Player player;
+
+    [Header("Shop")]
+    public GameObject shopPanel;
+
 
     [Header("HP")]
     public int maxHP = 5;
@@ -50,6 +57,8 @@ public class Player : MonoBehaviour
 
     private Coroutine poisonCoroutine;
 
+    private bool isShopOpen = false;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -71,12 +80,15 @@ public class Player : MonoBehaviour
 
     private void UpdateAmmoUI()
     {
-        ammoText.text = $"{currentAmmo} / {maxAmmo}";
+        ammoText.text = $"남은 탄환: {currentAmmo} / {maxAmmo}";
     }
 
     void Update()
     {
-        HandleInput();
+        HandleInput(); // 항상 실행돼야 함 (방향 기억 포함)
+
+        if (isShopOpen) return; // 아래 로직만 차단
+
         HandleAnimation();
 
         fireTimer += Time.deltaTime;
@@ -84,12 +96,6 @@ public class Player : MonoBehaviour
         if (isReloading) return;
 
         if (Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo)
-        {
-            StartCoroutine(Reload());
-            return;
-        }
-
-        if (Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo && !isReloading)
         {
             StartCoroutine(Reload());
             return;
@@ -207,6 +213,20 @@ public class Player : MonoBehaviour
 
         isReloading = false;
         reloadSlider.gameObject.SetActive(false);
+    }
+
+    public void OpenShop()
+    {
+        shopPanel.SetActive(true);
+        isShopOpen = true;  // 이동 막기
+        isShopOpen = true;
+    }
+
+    public void CloseShop()
+    {
+        shopPanel.SetActive(false);
+        isShopOpen = false; // 이동 가능하게
+        isShopOpen = false;
     }
 
 
